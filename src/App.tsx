@@ -1,24 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
+import { useFetch } from 'use-http';
 
 function App() {
+  const [age, setAge] = useState(0)
+  const [message, setMessage] = useState("")
+  const personGreeting = (personName: string, personAge: number) => {
+    setAge(personAge)
+    setMessage(`Hello ${personName} you are ${personAge} years old`)
+  }
+  const options = {}
+  const { loading, error, data = [] } = useFetch('https://picsum.photos/id/0/info', options, [])
+
+
+  useEffect(() => {
+    personGreeting("James", 24)
+  }, [age, message])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>{message}</h1>
     </div>
   );
 }
